@@ -1,0 +1,12 @@
+datas
+logs/*
+node_modules/
+*.md
+README.md
+Dockerfile
+.gitignore
+.dockerignore
+LICENSE
+
+JS_FIlE_TEMPLATE.webstorm10
+
