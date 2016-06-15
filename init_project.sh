@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # tackle two things
-# 1. replace four variables. {PROJECT} {AUTHOR} {PORT} {COMPANY}   in all files
-# 2. company dir's name  change to {COMPANY} , project dir's name change to {PROJECT}
+# 1. replace four variables. stock hjb 8899 netease   in all files
+# 2. company dir's name  change to netease , project dir's name change to stock
 
 COMPANY=$1
 PROJECT=$2
@@ -64,13 +64,13 @@ replacedir
 
 replace()
 {
-	sed  -i -e  s/{PROJECT}/$PROJECT/g  `grep {PROJECT} -rl .`
+	sed  -i '' -e  s/stock/$PROJECT/g  `grep stock -rl .`
 
-	sed  -i -e  s/{COMPANY}/$COMPANY/g  `grep {COMPANY} -rl .`
+	sed  -i '' -e  s/netease/$COMPANY/g  `grep netease -rl .`
 
-	sed  -i -e  s/{AUTHOR}/$AUTHOR/g  `grep {AUTHOR} package.json`
+	sed  -i '' -e  s/hjb/$AUTHOR/g  `grep hjb -rl .`
 
-	sed  -i -e  s/{PORT}/$PORT/g  `grep {PORT} bin/start_servers.h`
+	sed  -i '' -e  s/8899/$PORT/g  `grep 8899 -rl .`
 }
 
 replace
