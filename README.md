@@ -30,7 +30,7 @@ git checkout origin/helloworld
 
 * Step 2: Generate Scaffolding
 
-By running  `sh init_project.sh` to generate scaffolding, In the making the scaffolding, it will ask you to enter the below four parameters:
+By running  `sh init_project.sh` to generate scaffolding, In the making the scaffolding, it will ask you to enter the below four parameters to replace the below  macro definistions:{COMPANY},{PROJECT},{AUTHOR},{PORT}
 
 * compnay'name (dot disallowed)
 * project name (dot disallowed)
@@ -171,7 +171,7 @@ import Controllers from '../controllers/Controllers';
     /**
      * Class Routes
      *
-     * @class {COMPANY}.{PROJECT}.routes.Routes
+     * @class netease.monitor.backend.routes.Routes
      * @extends easynode.GenericObject
      * @since 0.1.0
      * @author allen.hu
@@ -221,7 +221,7 @@ var logger = using('easynode.framework.Logger').forFile(__filename);
 var GenericObject = using('easynode.GenericObject');
 var S = require('string');
 var thunkify = require('thunkify');
-var Routes = using('{COMPANY}.{PROJECT}.backend.routes.Routes');
+var Routes = using('netease.monitor.backend.routes.Routes');
 var MySqlDataSource = using('easynode.framework.db.MysqlDataSource');
 var HTTPUtil =  using('easynode.framework.util.HTTPUtil');
 
@@ -229,7 +229,7 @@ var HTTPUtil =  using('easynode.framework.util.HTTPUtil');
     /**
      * Class Main
      *
-     * @class {COMPANY}.{PROJECT}.backend.Main
+     * @class netease.monitor.backend.Main
      * @extends easynode.GenericObject
      * @since 0.1.0
      * @author allen.hu
@@ -277,7 +277,7 @@ var HTTPUtil =  using('easynode.framework.util.HTTPUtil');
                 }
             });
 
-            httpServer.name = EasyNode.config('http.server.name','{PROJECT}-Service');
+            httpServer.name = EasyNode.config('http.server.name','netease-monitor-Service');
             Routes.defineRoutes(httpServer);
             yield httpServer.start();
         }

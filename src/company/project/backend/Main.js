@@ -59,7 +59,7 @@ var HTTPUtil =  using('easynode.framework.util.HTTPUtil');
                 }
             });
 
-            httpServer.name = EasyNode.config('http.server.name','{PROJECT}-Service');
+            httpServer.name = EasyNode.config('http.server.name','{COMPANY}-{PROJECT}-Service');
             Routes.defineRoutes(httpServer);
             yield httpServer.start();
         }
