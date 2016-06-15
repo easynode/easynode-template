@@ -13,5 +13,6 @@ WORKDIR /usr/src/app
 RUN source $HOME/.bashrc && \
 	babel src -d lib
 
+WORKDIR /usr/src/app/bin
 CMD ["./start.sh"]
 

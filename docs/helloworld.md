@@ -1,5 +1,7 @@
 # Hello World
 
+## Run with babel-node
+
 * Step 1: Checkout the code
 
 check out the code.
@@ -21,7 +23,7 @@ git checkout origin/helloworld
 
 * Step 2: Generate Scaffolding
 
-By running  `sh init_project.sh` to generate scaffolding, In the making the scaffolding, it will ask you to enter the below four parameters to replace the below  macro definistions:{COMPANY},{PROJECT},{AUTHOR},{PORT}
+By running  `sh init_project.sh` to generate scaffolding, In the making the scaffolding, it will ask you to enter the below four parameters to replace the below  macro definistions:netease,monitor,hjb,8899
 
 * compnay'name (dot disallowed)
 * project name (dot disallowed)
@@ -282,3 +284,21 @@ var HTTPUtil =  using('easynode.framework.util.HTTPUtil');
     module.exports = Main;
 })();
 ```
+
+## Run with node in the container
+
+* Step 1: Build the image
+
+```
+docker build -t easynode-helloworld:0.0.1 .
+```
+
+* Step 2: Run the container
+
+```
+docker run -d --net=host -e PORT=8899 easynode-helloworld:0.0.1 sh start.sh
+```
+
+* Step 3: See the output
+
+You open the http:://127.0.0.1:8899 in the browser, You will see the output "Hello World!"
