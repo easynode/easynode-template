@@ -23,7 +23,7 @@ git checkout origin/helloworld
 
 * Step 2: Generate Scaffolding
 
-By running  `sh init_project.sh` to generate scaffolding, In the making the scaffolding, it will ask you to enter the below four parameters to replace the below  macro definistions:netease,monitor,hjb,8899
+By running  `sh init_project.sh` to generate scaffolding, In the making the scaffolding, it will ask you to enter the below four parameters to replace the below  macro definistions:{COMPANY},{PROJECT},{AUTHOR},{PORT}
 
 * compnay'name (dot disallowed)
 * project name (dot disallowed)
