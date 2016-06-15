@@ -64,13 +64,10 @@ replacedir
 
 replace()
 {
-	sed  -i '' -e  s/stock/$PROJECT/g  `grep stock -rl .`
-
-	sed  -i '' -e  s/netease/$COMPANY/g  `grep netease -rl .`
-
-	sed  -i '' -e  s/hjb/$AUTHOR/g  `grep hjb -rl .`
-
-	sed  -i '' -e  s/8899/$PORT/g  `grep 8899 -rl .`
+	sed  -i '' -e  s/{PROJECT}/$PROJECT/g  `grep {PROJECT} -rl .`
+    sed  -i '' -e  s/{COMPANY}/$COMPANY/g  `grep {COMPANY} -rl .`
+    sed  -i '' -e  s/{AUTHOR}/$AUTHOR/g  `grep {AUTHOR} -rl .`
+    sed  -i '' -e  s/{PORT}/$PORT/g  `grep {PORT} -rl .`
 }
 
 replace
