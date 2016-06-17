@@ -37,3 +37,5 @@ bin/resolved-namespaces.js
 .idea/workspace.xml
 test/data
 .idea
+config/config.json
+config/config_icp.json

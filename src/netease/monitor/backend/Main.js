@@ -3,15 +3,16 @@ var logger = using('easynode.framework.Logger').forFile(__filename);
 var GenericObject = using('easynode.GenericObject');
 var S = require('string');
 var thunkify = require('thunkify');
-var Routes = using('{COMPANY}.{PROJECT}.backend.routes.Routes');
+var Routes = using('netease.monitor.backend.routes.Routes');
 var MySqlDataSource = using('easynode.framework.db.MysqlDataSource');
 var HTTPUtil =  using('easynode.framework.util.HTTPUtil');
+var fs = require('co-fs');
 
 (function () {
     /**
      * Class Main
      *
-     * @class {COMPANY}.{PROJECT}.backend.Main
+     * @class netease.monitor.backend.Main
      * @extends easynode.GenericObject
      * @since 0.1.0
      * @author allen.hu
@@ -33,10 +34,22 @@ var HTTPUtil =  using('easynode.framework.util.HTTPUtil');
 
         static * main(){
 
+            var configUrl = process.env.CONFIG_URL;
+            var config = {};
+            if( configUrl.startsWith('http') ){
+                config = yield HTTPUtil.getBinary(configUrl);
+            } else {
+                config = yield fs.readFile(configUrl,'utf8');
+            }
+            config = JSON.parse(config);
+
             //HTTP Server
             var KOAHttpServer =  using('easynode.framework.server.http.KOAHttpServer');
             var httpPort = S(EasyNode.config('http.server.port','7000')).toInt();
             var httpServer = new KOAHttpServer(httpPort);
+
+            // assign env config to application object
+            httpServer.config = config;
 
             //设置ContextHook,
             httpServer.setActionContextListener({
@@ -59,7 +72,7 @@ var HTTPUtil =  using('easynode.framework.util.HTTPUtil');
                 }
             });
 
-            httpServer.name = EasyNode.config('http.server.name','{COMPANY}-{PROJECT}-Service');
+            httpServer.name = EasyNode.config('http.server.name','netease-monitor-Service');
             Routes.defineRoutes(httpServer);
             yield httpServer.start();
         }

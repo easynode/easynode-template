@@ -13,7 +13,7 @@ import Controllers from '../controllers/Controllers';
     /**
      * Class Routes
      *
-     * @class {COMPANY}.{PROJECT}.routes.Routes
+     * @class netease.monitor.routes.Routes
      * @extends easynode.GenericObject
      * @since 0.1.0
      * @author allen.hu
@@ -43,6 +43,7 @@ import Controllers from '../controllers/Controllers';
         static addRoute(httpServer)
         {
             httpServer.addRoute('get', '/', Controllers.home(httpServer));
+            httpServer.addRoute('post', '/upl', Controllers.upload(httpServer));
         }
 
         getClassName()
