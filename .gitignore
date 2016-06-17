@@ -39,3 +39,5 @@ test/data
 .idea
 config/config.json
 config/config_icp.json
+test/mock/2.jpg
+test/mock/3.jpg
