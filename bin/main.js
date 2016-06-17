@@ -32,13 +32,13 @@ const logger = using('easynode.framework.Logger').getLogger();
                 var PROJECT = EasyNode.arg('project');
                 //加载项目src目录和配置文件
                 if(PROJECT) {
-                        logger.info(`loading project [${PROJECT}] source and configurations...`);
-                        EasyNode.addSourceDirectory(`projects/${PROJECT}/src`);
-                        if(fs.existsSync(EasyNode.real(`projects/${PROJECT}/etc/${PROJECT}.conf`))) {
-                                EasyNode.addConfigFile(`projects/${PROJECT}/etc/${PROJECT}.conf`);
+                        logger.info(`loading project [$monitor] source and configurations...`);
+                        EasyNode.addSourceDirectory(`projects/$monitor/src`);
+                        if(fs.existsSync(EasyNode.real(`projects/$monitor/etc/$monitor.conf`))) {
+                                EasyNode.addConfigFile(`projects/$monitor/etc/$monitor.conf`);
                         }
-                        if(fs.existsSync(EasyNode.real(`projects/${PROJECT}/etc/i18n`))) {
-                                EasyNode.addi18nDirectory(`projects/${PROJECT}/etc/i18n`);
+                        if(fs.existsSync(EasyNode.real(`projects/$monitor/etc/i18n`))) {
+                                EasyNode.addi18nDirectory(`projects/$monitor/etc/i18n`);
                         }
                 }
                 var mainClassName = EasyNode.arg('main-class');
@@ -58,8 +58,8 @@ const logger = using('easynode.framework.Logger').getLogger();
                         var httpServer = new KOAHttpServer();
                         //加载HTTP目录
                         if(PROJECT) {
-                                logger.info(`add project web directory projects/${PROJECT}/www/`);
-                                httpServer.addWebDirs(`projects/${PROJECT}/www/`);
+                                logger.info(`add project web directory projects/$monitor/www/`);
+                                httpServer.addWebDirs(`projects/$monitor/www/`);
                         }
                         //加载插件
                         var EasyNodePlugin = using('easynode.framework.plugin.EasyNodePlugin');
@@ -106,14 +106,14 @@ const logger = using('easynode.framework.Logger').getLogger();
                         };
 
                         if(PROJECT) {
-                                yield require(`../projects/${PROJECT}/src/ProjectEntry.js`).launch(projectLoadCtx);
+                                yield require(`../projects/$monitor/src/ProjectEntry.js`).launch(projectLoadCtx);
                         }
 
                         yield httpServer.start();
                 }
                 else {
                         if(PROJECT) {
-                                yield require(`../projects/${PROJECT}/src/ProjectEntry.js`).launch(projectLoadCtx);
+                                yield require(`../projects/$monitor/src/ProjectEntry.js`).launch(projectLoadCtx);
                         }
                         var MainClass = using(mainClassName);
                         if(typeof MainClass.main == 'function') {

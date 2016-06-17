@@ -8,14 +8,14 @@ startService() {
         echo "starting  service [$1],  HTTP port: [$2]"
 
         source /root/.bashrc
-        node main.min.js --debug-output=true --http.server.port=$2 --src-dirs=lib --main-class={COMPANY}.{PROJECT}.backend.Main --config-files=config/service.conf  --easynode.app.id=$1
+        node main.min.js --debug-output=true --http.server.port=$2 --src-dirs=lib --main-class=netease.monitor.backend.Main --config-files=config/service.conf  --easynode.app.id=$1
 }
 
-echo 'starting {COMPANY}.{PROJECT} servers...'
+echo 'starting netease.monitor servers...'
 
-#################{COMPANY}.{PROJECT} backend Servers START##############
+#################netease.monitor backend Servers START##############
 sleep 1
-startService '{COMPANY}.{PROJECT}' $PORT
-#################{COMPANY}.{PROJECT} backend Servers END#########################
-echo '{COMPANY}.{PROJECT} backend servers started!'
+startService 'netease.monitor' $PORT
+#################netease.monitor backend Servers END#########################
+echo 'netease.monitor backend servers started!'
 
