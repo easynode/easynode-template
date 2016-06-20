@@ -43,34 +43,51 @@ var fs = require('co-fs');
             }
             config = JSON.parse(config);
 
+            // Database source, connection pool
+            var dataSource = new MySqlDataSource();
+            dataSource.initialize(config.mysql);
+
+
             //HTTP Server
             var KOAHttpServer =  using('easynode.framework.server.http.KOAHttpServer');
             var httpPort = S(EasyNode.config('http.server.port','7000')).toInt();
             var httpServer = new KOAHttpServer(httpPort);
 
+            httpServer.setSessionStorage(KOAHttpServer.SessionSupport.STORAGE_REDIS, {
+                host: '218.205.113.98',
+                port: 6380,
+                db:1,
+                auth_pass: '1122334455'
+            });
+
             // assign env config to application object
             httpServer.config = config;
 
+            // assign dataSource to application object
+            httpServer.dataSource = dataSource;
+
             //设置ContextHook,
-            httpServer.setActionContextListener({
-                onCreate: function (ctx) {
-                    console.log("onCreate");
-                    return function * () {
-                    };
-                },
-                onDestroy: function (ctx) {
-                    console.log("onDestroy");
-                    return function * () {
+      httpServer.setActionContextListener({
+        onCreate: function(ctx) {
+          return function *() {
+            ctx.setConnection(yield ds.getConnection());
+            yield ctx.getConnection().beginTransaction();
+          };
+        },
+        onDestroy: function(ctx) {
+          return function *() {
+            yield ctx.getConnection().commit();
+            yield ds.releaseConnection(ctx.getConnection());
+          };
+        },
 
-                    };
-                },
-
-                onError: function (ctx, err) {
-                    console.log("onError");
-                    return function * () {
-                    };
-                }
-            });
+        onError: function(ctx, err) {
+          return function *() {
+            yield ctx.getConnection().rollback();
+            !err.executeResult && logger.error(err.stack);
+          };
+        }
+      });
 
             httpServer.name = EasyNode.config('http.server.name','netease-monitor-Service');
             Routes.defineRoutes(httpServer);

@@ -10,7 +10,9 @@
     "easynode": "*"
   },
   "author": "hjb",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+  }
 }
 
 

@@ -5,6 +5,7 @@ var logger = using('easynode.framework.Logger').forFile(__filename);
 var GenericObject = using('easynode.GenericObject');
 var S = require('string');
 var thunkify = require('thunkify');
+import bodyParse from 'koa-body';
 
 import Controllers from '../controllers/Controllers';
 
@@ -37,6 +38,8 @@ import Controllers from '../controllers/Controllers';
         {
             Routes.addRoute(httpServer);
 
+            httpServer.addMiddleware(bodyParse());
+
             httpServer.addTemplateDirs('plugins/views');
         }
 
@@ -44,6 +47,14 @@ import Controllers from '../controllers/Controllers';
         {
             httpServer.addRoute('get', '/', Controllers.home(httpServer));
             httpServer.addRoute('post', '/upl', Controllers.upload(httpServer));
+
+            // User
+            httpServer.addRoute('post','/user', Controllers.addUser(httpServer));
+            httpServer.addRoute('get','/add/user', Controllers.addUserPage(httpServer));
+            httpServer.addRoute('put','/user/:id',Controllers.updateUser(httpServer));
+            httpServer.addRoute('get','/user/:id',Controllers.getUser(httpServer));
+            httpServer.addRoute('get','/user/:index/:pagesize',Controllers.getUserlist(httpServer));
+            httpServer.addRoute('delete','/user/:id',Controllers.delUser(httpServer));
         }
 
         getClassName()

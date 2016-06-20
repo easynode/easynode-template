@@ -8,6 +8,7 @@ var f =  require('fs');
 var util = require('util');
 var thunkify = require('thunkify');
 var StoreService = using('netease.monitor.backend.services.StoreService');
+var UserService =  using('netease.monitor.backend.services.UserService');
 
 (function () {
     /**
@@ -102,6 +103,153 @@ var StoreService = using('netease.monitor.backend.services.StoreService');
                 }
             };
         }
+
+        /**
+         * @api {post} /user 添加用户
+         * @apiName addUser
+         * @apiGroup User
+         * @apiPermission
+         * @apiVersion 0.0.1
+         * @apiDescription
+         *
+         * @apiSampleRequest http://127.0.0.1:8899/user/
+         *
+         * @apiParam {Object} user 用户信息,模版里遍历该对像属性字段
+
+         * @apiUse EmptyRecord
+         */
+        static addUser(app){
+            return function *(){
+
+                var userService = new UserService(app);
+                var ret = yield userService.addUser();
+
+                this.type = 'json';
+                this.body = ret ;
+            };
+        }
+
+        /**
+         * @api {post} /add/user 添加用户页面
+         * @apiName addUserPage
+         * @apiGroup User
+         * @apiPermission
+         * @apiVersion 0.0.1
+         * @apiDescription
+         *
+         * @apiSampleRequest http://127.0.0.1:8899/add/user/
+         *
+         * @apiUse EmptyRecord
+         */
+        static addUserPage(app){
+            return function *(){
+                yield this.render('add-user');
+            };
+        }
+
+        /**
+         * @api {post} /user 添加用户
+         * @apiName addUser
+         * @apiGroup User
+         * @apiPermission
+         * @apiVersion 0.0.1
+         * @apiDescription
+         *
+         * @apiSampleRequest http://127.0.0.1:8899/user/
+         *
+         * @apiParam {Object} user 用户信息,模版里遍历该对像属性字段
+
+         * @apiUse EmptyRecord
+         */
+        static updateUser(app){
+            return function *(id){
+
+                console.log("id",id);
+
+                var userService = new UserService(app);
+                var ret = yield userService.updateUser(id);
+
+                this.type = 'json';
+                this.body = { ret: 'update success' };
+            };
+        }
+
+        /**
+         * @api {post} /user 添加用户
+         * @apiName addUser
+         * @apiGroup User
+         * @apiPermission
+         * @apiVersion 0.0.1
+         * @apiDescription
+         *
+         * @apiSampleRequest http://127.0.0.1:8899/user/
+         *
+         * @apiParam {Object} user 用户信息,模版里遍历该对像属性字段
+
+         * @apiUse EmptyRecord
+         */
+        static getUser(app){
+            return function *(id){
+
+                console.log("getUser id",id);
+
+                var userService = new UserService(app);
+                var ret = yield userService.getUser(id);
+
+                this.type = 'json';
+                this.body = { ret: ret };
+            };
+        }
+
+        /**
+         * @api {post} /user 添加用户
+         * @apiName addUser
+         * @apiGroup User
+         * @apiPermission
+         * @apiVersion 0.0.1
+         * @apiDescription
+         *
+         * @apiSampleRequest http://127.0.0.1:8899/user/
+         *
+         * @apiParam {Object} user 用户信息,模版里遍历该对像属性字段
+
+         * @apiUse EmptyRecord
+         */
+        static getUserlist(app){
+            return function *(index,pagesize){
+                var userService = new UserService(app);
+                var ret = yield userService.getUserList(index,pagesize);
+
+                this.type = 'json';
+                this.body = { ret: ret };
+            };
+        }
+
+        /**
+         * @api {post} /user 添加用户
+         * @apiName addUser
+         * @apiGroup User
+         * @apiPermission
+         * @apiVersion 0.0.1
+         * @apiDescription
+         *
+         * @apiSampleRequest http://127.0.0.1:8899/user/
+         *
+         * @apiParam {Object} user 用户信息,模版里遍历该对像属性字段
+
+         * @apiUse EmptyRecord
+         */
+        static delUser(app){
+            return function *(id){
+
+                var userService = new UserService(app);
+                var ret = yield userService.delUser(id);
+
+                this.type = 'json';
+                this.body = { ret:ret };
+            };
+        }
+
 
         getClassName()
         {

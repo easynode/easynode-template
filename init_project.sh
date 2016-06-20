@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # tackle two things
-# 1. replace four variables. stock hjb 8899 netease   in all files
-# 2. company dir's name  change to netease , project dir's name change to stock
+# 1. replace four variables. icp {AUTHOR} {PORT} COMPANY   in all files
+# 2. company dir's name  change to COMPANY , project dir's name change to icp
 
 COMPANY=$1
 PROJECT=$2
