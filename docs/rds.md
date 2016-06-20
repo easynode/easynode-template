@@ -193,12 +193,13 @@ httpServer.addRoute('delete','/${model}/:id',Controllers.del${Model}(httpServer)
 route template
 
 ```
-httpServer.addRoute('post','/${MODEL}', Controllers.add${MODEL}(httpServer));
-httpServer.addRoute('/${MODEL}/user', Controllers.add${MODEL}Page(httpServer));
-httpServer.addRoute('put','${MODEL}/:id',Controllers.update${MODEL}(httpServer));
-httpServer.addRoute('get','${MODEL}/:id',Controllers.get${MODEL}(httpServer));
-httpServer.addRoute('post','${MODEL}/:index/:pagesize',Controllers.get${MODEL}list(httpServer));
-httpServer.addRoute('delete','${MODEL}/:id',Controllers.del${MODEL}(httpServer));
+// User
+httpServer.addRoute('post','/user', Controllers.addUser(httpServer));
+httpServer.addRoute('get','/add/user', Controllers.addUserPage(httpServer));
+httpServer.addRoute('put','/user/:id',Controllers.updateUser(httpServer));
+httpServer.addRoute('get','/user/:id',Controllers.getUser(httpServer));
+httpServer.addRoute('get','/user/:index/:pagesize',Controllers.getUserlist(httpServer));
+httpServer.addRoute('delete','/user/:id',Controllers.delUser(httpServer));
 ```
 
 ### Controller template
@@ -786,9 +787,9 @@ Code fragememt:
 }
 ```
 
-resCode:  as a return code(subsection)
-resReason: the message according to resCode
-data: object that package business data
+* resCode:  as a return code(subsection)
+* resReason: the message according to resCode
+* data: object that package business data
 
 
 ### RDS Config
@@ -978,9 +979,6 @@ ToDO: parameter validation and response validation based on JSON-Schema.
 
 
 ## Checkout code
-
-```
-* Step 1: Checkout the code
 
 check out the code.
 
