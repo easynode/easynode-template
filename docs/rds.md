@@ -977,3 +977,17 @@ execUpdate(sql, args = {})
 ToDO: parameter validation and response validation based on JSON-Schema.
 
 
+## Checkout code
+
+```
+* Step 1: Checkout the code
+
+check out the code.
+
+```
+git clone https://github.com/easynode/easynode-template.git
+
+git branch -r   //show remote branchs
+
+git checkout origin/rds
+```
