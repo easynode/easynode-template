@@ -1,8 +1,10 @@
 'use strict';
 var assert = require('assert');
+var Mixin = using('easynode.framework.Mixin');
 var logger = using('easynode.framework.Logger').forFile(__filename);
 var GenericObject = using('easynode.GenericObject');
 var User = using('netease.monitor.backend.models.User');
+var APIReturn =  using('easynode.framework.util.APIReturn');
 
 (function() {
 
@@ -15,7 +17,7 @@ var User = using('netease.monitor.backend.models.User');
      * @author allen.hu
      * @description
      * */
-  class UserService extends GenericObject {
+  class UserService extends Mixin.mix(GenericObject,APIReturn) {
         /**
          * 构造函数。
          *
@@ -33,22 +35,25 @@ var User = using('netease.monitor.backend.models.User');
     addUser(){
       var me = this;
       return function *(){
-        var newId = 0;
+
         try {
+          var newId = 0;
+          var ret = {};
+          var body = this.request.body;
+          var model = new User();
           var conn = yield me.app.dataSource.getConnection();
 
-          var body = this.request.body;
-
-          var model = new User();
-          model.merge( Object.assign( body, {createtime:Date.now(), updatetime:Date.now()}  ) );
+          model.merge( Object.assign( body, {createtime:Date.now(), updatetime:Date.now()} ) );
 
           var record = yield conn.create(model);
           newId = record.insertId;
+          ret = me.APIReturn(0,'success',{id:newId});
         } catch (e) {
           EasyNode.DEBUG && logger.error(e);
+          ret = me.APIReturn(1,'failed',{});
         } finally {
           yield me.app.dataSource.releaseConnection(conn);
-          return { id: newId };
+          return ret;
         }
       }
     }
@@ -56,25 +61,23 @@ var User = using('netease.monitor.backend.models.User');
     updateUser(id){
       var me = this;
       return function *(){
-        var newId = 0;
+
         try {
+          var ret = {};
+          var body = this.request.body;
+          var model = new User();
           var conn = yield me.app.dataSource.getConnection();
 
-          console.log("updateUser");
-
-          var body = this.request.body;
-          console.log(body);
-
-          var model = new User();
-          model.merge( Object.assign( body, {id:id,createtime:Date.now(), updatetime:Date.now()}  ) );
+          model.merge( Object.assign( body, {id:id, updatetime:Date.now()} ) );
 
           var record = yield conn.update(model);
-          newId = record.insertId;
+          ret = me.APIReturn(0,'success',{id: id});
         } catch (e) {
           EasyNode.DEBUG && logger.error(e);
+          ret = me.APIReturn(1,'failed',{});
         } finally {
           yield me.app.dataSource.releaseConnection(conn);
-          return { id: newId };
+          return ret;
         }
       }
     }
@@ -88,24 +91,19 @@ var User = using('netease.monitor.backend.models.User');
             var record = null;
             var sql = '';
             var arr = [];
-
-            console.log("aaa");
-            console.log(this.parameter);
-            console.log(this.body);
-            console.log(this.query);
-            var id = id || 0;
+            var id2 = id || 0 ;
             var conn = yield me.app.dataSource.getConnection();
 
             sql = 'SELECT id,account,accountid,email, phonenumber,salt,passwordsha,createtime, updatetime FROM monitor_user WHERE id = #id#';
-            arr = yield conn.execQuery( sql, {id:id} );
+            arr = yield conn.execQuery( sql, {id:id2} );
             if (arr.length <= 0) {
               return ret;
             }
             record = arr[0];
-
-            ret.record = record;
+            ret = me.APIReturn(0,'success',record);
           } catch (e) {
             EasyNode.DEBUG && logger.debug(` ${e} ${e.stack}`);
+            ret = me.APIReturn(1,'fail',{});
           } finally {
             yield me.app.dataSource.releaseConnection(conn);
             return ret;
@@ -116,17 +114,44 @@ var User = using('netease.monitor.backend.models.User');
       getUserList(index,pagesize){
         var me = this;
         return function *(){
-          console.log(`***********index:${index},pagesize:${pagesize}`);
-          return "userinfoList";
-        }
+            try {
+              var ret = {};
+              var model = new User();
+              var conn = yield me.app.dataSource.getConnection();
+
+              var data = yield conn.list(model,{id: {exp:'!=',value:0} }, {page: index, rpp: pagesize}, ['updatetime ASC']);
+
+              ret = me.APIReturn(0,'success',data);
+            } catch (e) {
+              EasyNode.DEBUG && logger.debug(` ${e} ${e.stack}`);
+              ret = me.APIReturn(1,'fail',{});
+            } finally {
+              yield me.app.dataSource.releaseConnection(conn);
+              return ret;
+            }
+          };
       }
 
       delUser(id){
         var me = this;
         return function *(){
-          console.log("delUser:id",id);
-          return "del user success";
-        }
+
+        try {
+            var ret = {};
+            var model = new User();
+            var conn = yield me.app.dataSource.getConnection();
+
+            var data = yield conn.del(model,[id]);
+            //{ affectedRows: 1, insertId: 0 }
+            ret = me.APIReturn(0,'success',{id: id});
+          } catch (e) {
+            EasyNode.DEBUG && logger.debug(` ${e} ${e.stack}`);
+            ret = me.APIReturn(1,'fail',{});
+          } finally {
+            yield me.app.dataSource.releaseConnection(conn);
+            return ret;
+          }
+        };
       }
 
     getClassName() {

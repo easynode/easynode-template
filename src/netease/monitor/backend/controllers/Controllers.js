@@ -34,6 +34,16 @@ var UserService =  using('netease.monitor.backend.services.UserService');
             //调用super()后再定义子类成员。
         }
 
+        /**
+         * @apiDefine APIReturn
+         * @apiSuccess
+         * @apiError
+         *
+         * @apiErrorExample :
+         *      {resCode:1, resReason:'failed', data:{} }
+         * @apiSuccessExample:
+         *     {"resCode":0,"resReason":"success","data":{"rows":1,"pages":1,"page":"0","rpp":"20","data":[{"id":1,"account":"hujb2000@163.com","accountid":"allen.hu","email":"hujb2000@163.com","phonenumber":"*****","salt":"12345","passwordsha":"1234561213123","createtime":1466410666309,"updatetime":1466410666309}]}}
+         * */
 
         /**
          * @api:
@@ -115,8 +125,8 @@ var UserService =  using('netease.monitor.backend.services.UserService');
          * @apiSampleRequest http://127.0.0.1:8899/user/
          *
          * @apiParam {Object} user 用户信息,模版里遍历该对像属性字段
-
-         * @apiUse EmptyRecord
+         *
+         * @apiUse APIReturn
          */
         static addUser(app){
             return function *(){
@@ -130,7 +140,7 @@ var UserService =  using('netease.monitor.backend.services.UserService');
         }
 
         /**
-         * @api {post} /add/user 添加用户页面
+         * @api {get} /add/user 添加用户页面
          * @apiName addUserPage
          * @apiGroup User
          * @apiPermission
@@ -139,7 +149,7 @@ var UserService =  using('netease.monitor.backend.services.UserService');
          *
          * @apiSampleRequest http://127.0.0.1:8899/add/user/
          *
-         * @apiUse EmptyRecord
+         * @apiSuccess 返回页面
          */
         static addUserPage(app){
             return function *(){
@@ -148,96 +158,88 @@ var UserService =  using('netease.monitor.backend.services.UserService');
         }
 
         /**
-         * @api {post} /user 添加用户
-         * @apiName addUser
+         * @api {put} /user 修改用户
+         * @apiName updateUser
          * @apiGroup User
          * @apiPermission
          * @apiVersion 0.0.1
          * @apiDescription
          *
-         * @apiSampleRequest http://127.0.0.1:8899/user/
+         * @apiSampleRequest http://127.0.0.1:8899/user/:id
          *
          * @apiParam {Object} user 用户信息,模版里遍历该对像属性字段
 
-         * @apiUse EmptyRecord
+         * @apiUse APIReturn
          */
         static updateUser(app){
             return function *(id){
-
-                console.log("id",id);
 
                 var userService = new UserService(app);
                 var ret = yield userService.updateUser(id);
 
                 this.type = 'json';
-                this.body = { ret: 'update success' };
+                this.body = ret;
             };
         }
 
         /**
-         * @api {post} /user 添加用户
-         * @apiName addUser
+         * @api {get} /user/:id 获取用户详情
+         * @apiName getUser
          * @apiGroup User
          * @apiPermission
          * @apiVersion 0.0.1
          * @apiDescription
          *
-         * @apiSampleRequest http://127.0.0.1:8899/user/
+         * @apiSampleRequest http://127.0.0.1:8899/user/:id
          *
-         * @apiParam {Object} user 用户信息,模版里遍历该对像属性字段
-
-         * @apiUse EmptyRecord
+         * @apiUse APIReturn
          */
         static getUser(app){
             return function *(id){
-
-                console.log("getUser id",id);
 
                 var userService = new UserService(app);
                 var ret = yield userService.getUser(id);
 
                 this.type = 'json';
-                this.body = { ret: ret };
+                this.body = ret;
             };
         }
 
         /**
-         * @api {post} /user 添加用户
-         * @apiName addUser
+         * @api {get} /user/:index/:pagesize 获取用户列表
+         * @apiName getUserlist
          * @apiGroup User
          * @apiPermission
          * @apiVersion 0.0.1
          * @apiDescription
          *
-         * @apiSampleRequest http://127.0.0.1:8899/user/
+         * @apiSampleRequest http://127.0.0.1:8899/user/:index/:pagesize
          *
-         * @apiParam {Object} user 用户信息,模版里遍历该对像属性字段
-
-         * @apiUse EmptyRecord
+         * @apiUse APIReturn
          */
         static getUserlist(app){
             return function *(index,pagesize){
+
                 var userService = new UserService(app);
                 var ret = yield userService.getUserList(index,pagesize);
 
                 this.type = 'json';
-                this.body = { ret: ret };
+                this.body = ret;
             };
         }
 
         /**
-         * @api {post} /user 添加用户
-         * @apiName addUser
+         * @api {delete} /user/:id 删除用户
+         * @apiName delUser
          * @apiGroup User
          * @apiPermission
          * @apiVersion 0.0.1
          * @apiDescription
          *
-         * @apiSampleRequest http://127.0.0.1:8899/user/
+         * @apiSampleRequest http://127.0.0.1:8899/user/:id
          *
-         * @apiParam {Object} user 用户信息,模版里遍历该对像属性字段
 
-         * @apiUse EmptyRecord
+         * @apiUse APIReturn
          */
         static delUser(app){
             return function *(id){
@@ -246,10 +248,9 @@ var UserService =  using('netease.monitor.backend.services.UserService');
                 var ret = yield userService.delUser(id);
 
                 this.type = 'json';
-                this.body = { ret:ret };
+                this.body = ret;
             };
         }
-
 
         getClassName()
         {
