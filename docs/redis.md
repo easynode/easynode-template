@@ -136,6 +136,104 @@ describe('RedisTest', function () {
 ```
 ## API Rate Limit
 
+Utilize the life circle of record in the redis, we can limit the rate to call API.
+
+* Step 1: Add Redis Config
+
+```
+"redisRatelimit":{
+"host": "127.0.0.1",
+"port": 6379,
+"db": 2,
+"auth_pass": ""
+  }
+```
+
+in the Main.js
+* Step 2: Import the class declaration
+
+```
+import rateLimit from 'koa-ratelimit';
+import redis from 'redis';
+```
+
+add the rate limit middleware:
+
+```
+ httpServer.addMiddleware(rateLimit({
+                db:redis.createClient(config.redisRatelimit),
+                duration:60000,
+                max:100,
+                id: function(context){
+                    return context.url;
+                },
+                headers:{
+                    remaining: 'Rate-Limit-Remaining',
+                    reset: 'Rate-Limit-Reset',
+                    total: 'Rate-Limit-Total'
+                }
+            }));
+```
+here id can be the context's attribute as the key, such as ip, url, path etc.
+
+* Step 3: Test code
+
+```
+/**
+ * Created by hujiabao on 6/17/16.
+ */
+
+'use strict';
+
+require("babel-polyfill");
+import co from 'co';
+import request from 'superagent';
+import chai from 'chai';
+const assert = chai.assert;
+
+var urlBase = 'http://127.0.0.1:8899';
+
+var newUserId = 0;
+
+describe('RateLimitTest', function () {
+
+    before(function (done) {
+        console.log("RateLimitTest before");
+        try {
+            done();
+        } catch (e) {
+            done(e);
+        }
+    });
+
+    for( var j=0; j < 111; j++ ){
+        it('RateLimit test',function (done){
+                request.get(`${urlBase}`)
+                    .set('Content-Type','application/json;charset=utf-8')
+                    .accept('text/html')
+                    .end(function(err, res){
+                        // Do something
+                        if( res.status === 200 ){
+                            assert( parseInt(res.headers['rate-limit-remaining']) >= 0 && res.status === 200, 'can continue' );
+                        }else{
+                            assert( parseInt(res.headers['rate-limit-remaining']) === 0 && res.status === 429, 'Too Many Requests' );
+                        }
+                        done();
+                    });
+            });
+    }
+
+    after(function (done) {
+        console.log("RateLimitTest after");
+        done();
+    });
+
+});
+
+```
+
+* References:  [node-ratelimit](https://github.com/tj/node-ratelimiter)
+
 ## Message Breaker
 
 ## Cache Data

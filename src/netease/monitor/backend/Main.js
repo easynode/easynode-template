@@ -7,6 +7,9 @@ var Routes = using('netease.monitor.backend.routes.Routes');
 var MySqlDataSource = using('easynode.framework.db.MysqlDataSource');
 var HTTPUtil =  using('easynode.framework.util.HTTPUtil');
 var fs = require('co-fs');
+import bodyParse from 'koa-body';
+import rateLimit from 'koa-ratelimit';
+import redis from 'redis';
 
 (function () {
     /**
@@ -86,6 +89,21 @@ var fs = require('co-fs');
 
             httpServer.name = EasyNode.config('http.server.name','netease-monitor-Service');
             Routes.defineRoutes(httpServer);
+            httpServer.addMiddleware(bodyParse());
+            httpServer.addMiddleware(rateLimit({
+                db:redis.createClient(config.redisRatelimit),
+                duration:60000,
+                max:100,
+                id: function(context){
+                    return context.url;
+                },
+                headers:{
+                    remaining: 'Rate-Limit-Remaining',
+                    reset: 'Rate-Limit-Reset',
+                    total: 'Rate-Limit-Total'
+                }
+            }));
+            httpServer.addTemplateDirs('plugins/views');
             yield httpServer.start();
         }
 

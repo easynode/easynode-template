@@ -5,7 +5,7 @@ var logger = using('easynode.framework.Logger').forFile(__filename);
 var GenericObject = using('easynode.GenericObject');
 var S = require('string');
 var thunkify = require('thunkify');
-import bodyParse from 'koa-body';
+
 
 import Controllers from '../controllers/Controllers';
 
@@ -37,10 +37,6 @@ import Controllers from '../controllers/Controllers';
         static defineRoutes(httpServer)
         {
             Routes.addRoute(httpServer);
-
-            httpServer.addMiddleware(bodyParse());
-
-            httpServer.addTemplateDirs('plugins/views');
         }
 
         static addRoute(httpServer)

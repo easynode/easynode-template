@@ -3,4 +3,4 @@
 --growl
 --compilers js:babel/register
 --require co-mocha
--t 3000000
+-t 15000000
