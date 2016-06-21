@@ -55,6 +55,12 @@ import Controllers from '../controllers/Controllers';
             httpServer.addRoute('get','/user/:id',Controllers.getUser(httpServer));
             httpServer.addRoute('get','/user/:index/:pagesize',Controllers.getUserlist(httpServer));
             httpServer.addRoute('delete','/user/:id',Controllers.delUser(httpServer));
+
+
+            // Session Demo
+            httpServer.addRoute('get','/session/',Controllers.getSession(httpServer));
+            httpServer.addRoute('delete','/session/',Controllers.delSession(httpServer));
+
         }
 
         getClassName()

@@ -252,6 +252,30 @@ var UserService =  using('netease.monitor.backend.services.UserService');
             };
         }
 
+
+        static getSession(app){
+            return function *(id){
+
+                var session = this.session;
+                session.count = session.count || 0;
+                session.count++;
+
+                this.type = 'json';
+                this.body = session.count;
+            };
+        }
+
+        static delSession(app){
+            return function *(id){
+
+                this.session = null;
+
+                this.type = 'json';
+                this.body = 0;
+            };
+        }
+
+
         getClassName()
         {
             return EasyNode.namespace(__filename);

@@ -20,6 +20,17 @@ cp my.cnf mysql_db;
 docker run --name mysql --restart=always -v `pwd`/mysql_db/:/etc/mysql/conf.d -v `pwd`/mysql_db/db/:/var/lib/mysql -e MYSQL_ROOT_PASSWORD='' -e MYSQL_DATABASE='' -e MYSQL_USER='' -e MYSQL_PASSWORD='' -p 3306:3306  -d mysql
 ```
 
+in the main.js:
+
+```
+ // Database source, connection pool
+ var dataSource = new MySqlDataSource();
+ dataSource.initialize(config.mysql);
+
+// assign dataSource to application object
+httpServer.dataSource = dataSource;
+```
+
 * Step 2: Create a table named "user"
 
 notice: All field names must are lower case
@@ -41,6 +52,8 @@ CREATE TABLE `monitor_user` (
 ) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=latin1;
 
 ```
+
+
 
 * Step 3: Generate Standard class Files
 

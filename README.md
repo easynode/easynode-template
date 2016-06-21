@@ -17,4 +17,6 @@ npm install -g babel-cli
 
 ### [Demo For RDS](/docs/rds.md)
 
+### [Demo For Redis](/docs/redis.md)
+
 

@@ -53,12 +53,7 @@ var fs = require('co-fs');
             var httpPort = S(EasyNode.config('http.server.port','7000')).toInt();
             var httpServer = new KOAHttpServer(httpPort);
 
-            httpServer.setSessionStorage(KOAHttpServer.SessionSupport.STORAGE_REDIS, {
-                host: '218.205.113.98',
-                port: 6380,
-                db:1,
-                auth_pass: '1122334455'
-            });
+            httpServer.setSessionStorage(KOAHttpServer.SessionSupport.STORAGE_REDIS, config.redis );
 
             // assign env config to application object
             httpServer.config = config;
