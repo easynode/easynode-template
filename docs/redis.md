@@ -234,7 +234,11 @@ describe('RateLimitTest', function () {
 
 * References:  [node-ratelimit](https://github.com/tj/node-ratelimiter)
 
-## Message Breaker
+## Message Breaker-Pub/Sub
+
+Publ/Sub published messages are characterized into channels, without knowledge of what (if any) subscribers there may be. Subscribers express interest in one or more channels, and only receive messages that are of interest, without knowledge of what (if any) publishers there are. This decoupling of publishers and subscribers can allow for greater scalability and a more dynamic network topology.
+
+
 
 ## Cache Data
 
